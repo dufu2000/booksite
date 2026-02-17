@@ -84,17 +84,38 @@
             font-size: 1.25rem;
             font-weight: 600;
             color: #1d1d1f;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
-        .book-date {
+        .book-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .info-tag {
             display: inline-block;
             background: #f5f5f7;
             padding: 4px 12px;
             border-radius: 6px;
-            font-size: 14px;
+            font-size: 13px;
             color: #6e6e73;
-            margin-bottom: 12px;
+        }
+
+        .info-tag.isbn {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .info-tag.publisher {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .info-tag.date {
+            background: #fff3e0;
+            color: #e65100;
         }
 
         .book-comment {
@@ -130,9 +151,20 @@
                 {% for book in books %}
                     <div class="book-card">
                         <div class="book-name">{{ book.name }}</div>
-                        {% if book.zoulei %}
-                            <div class="book-date">阅读时间: {{ book.zoulei }}</div>
-                        {% endif %}
+                        <div class="book-info">
+                            {% if book.ISBN %}
+                                <span class="info-tag isbn">ISBN: {{ book.ISBN }}</span>
+                            {% endif %}
+                            {% if book.publisher %}
+                                <span class="info-tag publisher">{{ book.publisher }}</span>
+                            {% endif %}
+                            {% if book.publishdate %}
+                                <span class="info-tag date">出版: {{ book.publishdate }}</span>
+                            {% endif %}
+                            {% if book.zoulei %}
+                                <span class="info-tag">阅读: {{ book.zoulei }}</span>
+                            {% endif %}
+                        </div>
                         {% if book.comment %}
                             <div class="book-comment">{{ book.comment }}</div>
                         {% endif %}

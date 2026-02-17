@@ -25,7 +25,7 @@ def index():
     if search_query:
         # Search by name or comment
         cursor.execute('''
-            SELECT name, zoulei, comment
+            SELECT name, zoulei, comment, ISBN, publisher, publishdate
             FROM book
             WHERE name LIKE ? OR comment LIKE ?
             ORDER BY zoulei DESC
@@ -33,7 +33,7 @@ def index():
     else:
         # Get all books, ordered by zoulei DESC
         cursor.execute('''
-            SELECT name, zoulei, comment
+            SELECT name, zoulei, comment, ISBN, publisher, publishdate
             FROM book
             ORDER BY zoulei DESC
         ''')
