@@ -28,14 +28,14 @@ def index():
             SELECT name, zoulei, comment
             FROM book
             WHERE name LIKE ? OR comment LIKE ?
-            ORDER BY zoulei ASC
+            ORDER BY zoulei DESC
         ''', (f'%{search_query}%', f'%{search_query}%'))
     else:
         # Get all books, ordered by zoulei DESC
         cursor.execute('''
             SELECT name, zoulei, comment
             FROM book
-            ORDER BY zoulei ASC
+            ORDER BY zoulei DESC
         ''')
 
     books = cursor.fetchall()
