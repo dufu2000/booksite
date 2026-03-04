@@ -33,10 +33,12 @@ def index():
                 STRFTIME('%s',
                     CASE WHEN LENGTH(STRFTIME('%Y', REPLACE(zoulei, ' ', ''))) = 2 THEN
                         (CASE
-                            WHEN CAST(STRFTIME('%Y', REPLACE(zoulei, ' ', '')) AS INTEGER) > 50 THEN
+                            WHEN CAST(STRFTIME('%Y', REPLACE(zoulei, ' ', '')) AS INTEGER) > 50 AND CAST(STRFTIME('%Y', REPLACE(zoulei, ' ', '')) AS INTEGER) < 100 THEN
                                 '19' || STRFTIME('%Y', REPLACE(zoulei, ' ', ''))
-                            ELSE
+                            WHEN CAST(STRFTIME('%Y', REPLACE(zoulei, ' ', '')) AS INTEGER) <= 50 AND CAST(STRFTIME('%Y', REPLACE(zoulei, ' ', '')) AS INTEGER) >= 0 THEN
                                 '20' || STRFTIME('%Y', REPLACE(zoulei, ' ', ''))
+                            ELSE
+                                STRFTIME('%Y', REPLACE(zoulei, ' ', ''))
                         END) || '-' || STRFTIME('%m', REPLACE(zoulei, ' ', '')) || '-' || STRFTIME('%d', REPLACE(zoulei, ' ', ''))
                         ELSE
                             STRFTIME('%Y-%m-%d', REPLACE(zoulei, ' ', ''))
@@ -53,10 +55,12 @@ def index():
                 STRFTIME('%s',
                     CASE WHEN LENGTH(STRFTIME('%Y', REPLACE(zoulei, ' ', ''))) = 2 THEN
                         (CASE
-                            WHEN CAST(STRFTIME('%Y', REPLACE(zoulei, ' ', '')) AS INTEGER) > 50 THEN
+                            WHEN CAST(STRFTIME('%Y', REPLACE(zoulei, ' ', '')) AS INTEGER) > 50 AND CAST(STRFTIME('%Y', REPLACE(zoulei, ' ', '')) AS INTEGER) < 100 THEN
                                 '19' || STRFTIME('%Y', REPLACE(zoulei, ' ', ''))
-                            ELSE
+                            WHEN CAST(STRFTIME('%Y', REPLACE(zoulei, ' ', '')) AS INTEGER) <= 50 AND CAST(STRFTIME('%Y', REPLACE(zoulei, ' ', '')) AS INTEGER) >= 0 THEN
                                 '20' || STRFTIME('%Y', REPLACE(zoulei, ' ', ''))
+                            ELSE
+                                STRFTIME('%Y', REPLACE(zoulei, ' ', ''))
                         END) || '-' || STRFTIME('%m', REPLACE(zoulei, ' ', '')) || '-' || STRFTIME('%d', REPLACE(zoulei, ' ', ''))
                         ELSE
                             STRFTIME('%Y-%m-%d', REPLACE(zoulei, ' ', ''))
