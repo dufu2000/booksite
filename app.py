@@ -36,7 +36,7 @@ def index():
         cursor.execute('''
             SELECT name, zoulei, comment, ISBN, publisher, publishdate
             FROM book
-            WHERE comment IS NOT NULL AND comment != ''
+            WHERE comment IS NOT NULL AND comment != '' AND TRIM(comment) != ''
             ORDER BY id DESC
             LIMIT 50
         ''')
