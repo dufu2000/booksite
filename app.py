@@ -39,11 +39,10 @@ def index():
                 ELSE '1970-01-01' END DESC
         ''', (f'%{search_query}%', f'%{search_query}%'))
     else:
-        # Get only the latest 50 books with non-empty comments, ordered by zoulei DESC
+        # Get only the latest 50 books, ordered by zoulei DESC
         cursor.execute('''
             SELECT name, zoulei, comment, ISBN, publisher, publishdate
             FROM book
-            WHERE comment IS NOT NULL AND comment != '' AND TRIM(comment) != ''
             ORDER BY
                 CASE WHEN zoulei LIKE '%/%/%' THEN
                     CASE
