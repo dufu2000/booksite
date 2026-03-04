@@ -37,7 +37,9 @@ def index():
             SELECT name, zoulei, comment, ISBN, publisher, publishdate
             FROM book
             WHERE comment IS NOT NULL AND comment != ''
-            ORDER BY zoulei DESC
+            ORDER BY CASE WHEN zoulei LIKE '____/__/__' THEN
+                STRFTIME('%s', REPLACE(zoulei, ' ', ''))
+                ELSE 0 END DESC
             LIMIT 50
         ''')
 
