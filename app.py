@@ -31,11 +31,12 @@ def index():
             ORDER BY zoulei DESC
         ''', (f'%{search_query}%', f'%{search_query}%'))
     else:
-        # Get all books, ordered by zoulei DESC
+        # Get only the latest 50 books, ordered by zoulei DESC
         cursor.execute('''
             SELECT name, zoulei, comment, ISBN, publisher, publishdate
             FROM book
             ORDER BY zoulei DESC
+            LIMIT 50
         ''')
 
     books = cursor.fetchall()
