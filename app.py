@@ -29,15 +29,29 @@ def index():
             SELECT name, zoulei, comment, ISBN, publisher, publishdate
             FROM book
             WHERE name LIKE ? OR comment LIKE ?
-            ORDER BY id DESC
+            ORDER BY
+                CASE WHEN zoulei LIKE '%/%/%' THEN
+                    CASE
+                        WHEN SUBSTR(zoulei, 7, 2) BETWEEN '00' AND '50' THEN '20' || SUBSTR(zoulei, 7, 2)
+                        WHEN SUBSTR(zoulei, 7, 2) BETWEEN '51' AND '99' THEN '19' || SUBSTR(zoulei, 7, 2)
+                        ELSE SUBSTR(zoulei, 7, 2)
+                    END || '-' || SUBSTR(zoulei, 1, 2) || '-' || SUBSTR(zoulei, 4, 2)
+                ELSE '1970-01-01' END DESC
         ''', (f'%{search_query}%', f'%{search_query}%'))
     else:
-        # Get only the latest 50 books with non-empty comments, ordered by id DESC
+        # Get only the latest 50 books with non-empty comments, ordered by zoulei DESC
         cursor.execute('''
             SELECT name, zoulei, comment, ISBN, publisher, publishdate
             FROM book
             WHERE comment IS NOT NULL AND comment != '' AND TRIM(comment) != ''
-            ORDER BY id DESC
+            ORDER BY
+                CASE WHEN zoulei LIKE '%/%/%' THEN
+                    CASE
+                        WHEN SUBSTR(zoulei, 7, 2) BETWEEN '00' AND '50' THEN '20' || SUBSTR(zoulei, 7, 2)
+                        WHEN SUBSTR(zoulei, 7, 2) BETWEEN '51' AND '99' THEN '19' || SUBSTR(zoulei, 7, 2)
+                        ELSE SUBSTR(zoulei, 7, 2)
+                    END || '-' || SUBSTR(zoulei, 1, 2) || '-' || SUBSTR(zoulei, 4, 2)
+                ELSE '1970-01-01' END DESC
             LIMIT 50
         ''')
 
