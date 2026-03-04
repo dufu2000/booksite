@@ -29,7 +29,19 @@ def index():
             SELECT name, zoulei, comment, ISBN, publisher, publishdate
             FROM book
             WHERE name LIKE ? OR comment LIKE ?
-            ORDER BY zoulei DESC
+            ORDER BY CASE WHEN zoulei LIKE '%/%/%' THEN
+                STRFTIME('%s',
+                    CASE WHEN LENGTH(STRFTIME('%Y', REPLACE(zoulei, ' ', ''))) = 2 THEN
+                        (CASE
+                            WHEN CAST(STRFTIME('%Y', REPLACE(zoulei, ' ', '')) AS INTEGER) > 50 THEN
+                                '19' || STRFTIME('%Y', REPLACE(zoulei, ' ', ''))
+                            ELSE
+                                '20' || STRFTIME('%Y', REPLACE(zoulei, ' ', ''))
+                        END) || '-' || STRFTIME('%m', REPLACE(zoulei, ' ', '')) || '-' || STRFTIME('%d', REPLACE(zoulei, ' ', ''))
+                        ELSE
+                            STRFTIME('%Y-%m-%d', REPLACE(zoulei, ' ', ''))
+                        END)
+                ELSE 0 END DESC
         ''', (f'%{search_query}%', f'%{search_query}%'))
     else:
         # Get only the latest 50 books with non-empty comments, ordered by zoulei DESC
@@ -37,8 +49,18 @@ def index():
             SELECT name, zoulei, comment, ISBN, publisher, publishdate
             FROM book
             WHERE comment IS NOT NULL AND comment != ''
-            ORDER BY CASE WHEN zoulei LIKE '____/__/__' THEN
-                STRFTIME('%s', REPLACE(zoulei, ' ', ''))
+            ORDER BY CASE WHEN zoulei LIKE '%/%/%' THEN
+                STRFTIME('%s',
+                    CASE WHEN LENGTH(STRFTIME('%Y', REPLACE(zoulei, ' ', ''))) = 2 THEN
+                        (CASE
+                            WHEN CAST(STRFTIME('%Y', REPLACE(zoulei, ' ', '')) AS INTEGER) > 50 THEN
+                                '19' || STRFTIME('%Y', REPLACE(zoulei, ' ', ''))
+                            ELSE
+                                '20' || STRFTIME('%Y', REPLACE(zoulei, ' ', ''))
+                        END) || '-' || STRFTIME('%m', REPLACE(zoulei, ' ', '')) || '-' || STRFTIME('%d', REPLACE(zoulei, ' ', ''))
+                        ELSE
+                            STRFTIME('%Y-%m-%d', REPLACE(zoulei, ' ', ''))
+                        END)
                 ELSE 0 END DESC
             LIMIT 50
         ''')
