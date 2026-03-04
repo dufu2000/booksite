@@ -29,35 +29,15 @@ def index():
             SELECT name, zoulei, comment, ISBN, publisher, publishdate
             FROM book
             WHERE name LIKE ? OR comment LIKE ?
-            ORDER BY CASE WHEN zoulei LIKE '%/%/%' THEN
-                -- Convert MM/DD/YY to MM/DD/YYYY and sort as string
-                CASE
-                    WHEN REPLACE(zoulei, ' ', '') LIKE '__/__/1%' THEN '20' || REPLACE(zoulei, ' ', '')
-                    WHEN REPLACE(zoulei, ' ', '') LIKE '__/__/2%' THEN '20' || REPLACE(zoulei, ' ', '')
-                    WHEN REPLACE(zoulei, ' ', '') LIKE '__/__/3%' THEN '20' || REPLACE(zoulei, ' ', '')
-                    WHEN REPLACE(zoulei, ' ', '') LIKE '__/__/4%' THEN '20' || REPLACE(zoulei, ' ', '')
-                    WHEN REPLACE(zoulei, ' ', '') LIKE '__/__/5%' THEN '20' || REPLACE(zoulei, ' ', '')
-                    ELSE '19' || REPLACE(zoulei, ' ', '')
-                END DESC
-                ELSE '1970/01/01 00:00:00' DESC
-            ''', (f'%{search_query}%', f'%{search_query}%'))
+            ORDER BY id DESC
+        ''', (f'%{search_query}%', f'%{search_query}%'))
     else:
-        # Get only the latest 50 books with non-empty comments, ordered by zoulei DESC
+        # Get only the latest 50 books with non-empty comments, ordered by id DESC
         cursor.execute('''
             SELECT name, zoulei, comment, ISBN, publisher, publishdate
             FROM book
             WHERE comment IS NOT NULL AND comment != ''
-            ORDER BY CASE WHEN zoulei LIKE '%/%/%' THEN
-                -- Convert MM/DD/YY to MM/DD/YYYY and sort as string
-                CASE
-                    WHEN REPLACE(zoulei, ' ', '') LIKE '__/__/1%' THEN '20' || REPLACE(zoulei, ' ', '')
-                    WHEN REPLACE(zoulei, ' ', '') LIKE '__/__/2%' THEN '20' || REPLACE(zoulei, ' ', '')
-                    WHEN REPLACE(zoulei, ' ', '') LIKE '__/__/3%' THEN '20' || REPLACE(zoulei, ' ', '')
-                    WHEN REPLACE(zoulei, ' ', '') LIKE '__/__/4%' THEN '20' || REPLACE(zoulei, ' ', '')
-                    WHEN REPLACE(zoulei, ' ', '') LIKE '__/__/5%' THEN '20' || REPLACE(zoulei, ' ', '')
-                    ELSE '19' || REPLACE(zoulei, ' ', '')
-                END DESC
-                ELSE '1970/01/01 00:00:00' DESC
+            ORDER BY id DESC
             LIMIT 50
         ''')
 
